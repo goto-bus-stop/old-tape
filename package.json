@@ -1,0 +1,31 @@
+{
+  "name": "old-tape",
+  "description": "a tape-like test harness for really really old browsers (i.e. IE8)",
+  "version": "0.0.0",
+  "author": "Renée Kooi <renee@kooi.me>",
+  "bugs": {
+    "url": "https://github.com/goto-bus-stop/old-tape/issues"
+  },
+  "dependencies": {
+    "xtend": "^4.0.1"
+  },
+  "devDependencies": {
+    "standard": "^11.0.1"
+  },
+  "homepage": "https://github.com/goto-bus-stop/old-tape",
+  "keywords": [
+    "es3",
+    "tap",
+    "tape",
+    "test"
+  ],
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/goto-bus-stop/old-tape.git"
+  },
+  "scripts": {
+    "test": "standard"
+  }
+}
