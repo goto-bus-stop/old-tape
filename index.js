@@ -10,7 +10,7 @@ function tape (name, opts, fn) {
   return main.test(name, opts, fn)
 }
 
-tape.onFinish = main.onFinish.bind(main)
+tape.onFinish = main.onFinish
 tape.skip = function (name, fn) {
   if (typeof name === 'function') {
     fn = name
@@ -21,7 +21,7 @@ tape.skip = function (name, fn) {
 
 function init () {
   inited = true
-  console.log('TAP version 13')
+  main._log('TAP version 13')
   process.nextTick(function () { main.run() })
   main.on('end', function () {
     if (main._count > main._passed) process.exitCode = 1

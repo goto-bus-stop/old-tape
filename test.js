@@ -1,3 +1,6 @@
+var FunctionBind = require('function-bind')
+var defaultConsole = require('console') // So browserify uses the polyfill
+
 module.exports = Test
 
 function Test (name, opts, fn) {
@@ -23,7 +26,15 @@ function Test (name, opts, fn) {
   this._failed = 0
   this._offset = 0
 
-  this.end = this.end.bind(this)
+  this.end = FunctionBind.call(this.end, this)
+  this.pass = FunctionBind.call(this.pass, this)
+  this.fail = FunctionBind.call(this.fail, this)
+  this.onFinish = FunctionBind.call(this.onFinish, this)
+}
+
+Test.prototype._log = function (msg) {
+  var console = this._opts.console || defaultConsole
+  if (console) console.log(msg)
 }
 
 Test.prototype.test = function (name, opts, fn) {
@@ -58,6 +69,11 @@ Test.prototype.emit = function (name) {
 }
 
 Test.prototype.run = function () {
+  if (this._opts.skip) {
+    this.comment('SKIP ' + this._name)
+    return this._end()
+  }
+
   var self = this
   this.emit('prerun')
 
@@ -78,18 +94,18 @@ Test.prototype.run = function () {
 
 Test.prototype._pass = function (n, message) {
   this._passed++
-  console.log('ok ' + (this._offset + n) + ' ' + message)
+  this._log('ok ' + (this._offset + n) + ' ' + message)
 }
 
 Test.prototype._fail = function (n, message) {
   this._failed++
-  console.log('not ok ' + (this._offset + n) + ' ' + message)
+  this._log('not ok ' + (this._offset + n) + ' ' + message)
 }
 
 Test.prototype._end = function () {
   this.emit('end')
   if (this._opts.root) {
-    console.log('1..' + this._passed)
+    this._log('1..' + this._passed)
   }
 }
 
@@ -154,7 +170,7 @@ Test.prototype.throws = function (fn, filter, message) {
 }
 
 Test.prototype.comment = function (message) {
-  console.log('# ' + message)
+  this._log('# ' + message)
 }
 
 Test.prototype.onFinish = function (fn) {
