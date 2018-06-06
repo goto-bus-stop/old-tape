@@ -63,7 +63,7 @@ Test.prototype.emit = function (name) {
   var args = []
   for (var i = 1; i < arguments.length; i++) args.push(arguments[i])
 
-  for (var i = 0; i < handlers.length; i++) {
+  for (i = 0; i < handlers.length; i++) {
     handlers[i].apply(this, args)
   }
 }
@@ -138,11 +138,11 @@ Test.prototype.error = function (message) {
 }
 
 Test.prototype.equal = function (a, b, message) {
-  this.ok(a == b, message || 'should be equal')
+  this.ok(a == b, message || 'should be equal') // eslint-disable-line eqeqeq
 }
 
 Test.prototype.notEqual = function (a, b, message) {
-  this.ok(a != b, message || 'should not be equal')
+  this.ok(a != b, message || 'should not be equal') // eslint-disable-line eqeqeq
 }
 
 Test.prototype.strictEqual = function (a, b, message) {
